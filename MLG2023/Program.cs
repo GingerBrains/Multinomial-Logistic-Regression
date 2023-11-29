@@ -27,10 +27,10 @@ namespace MLG2023
             dp.LoadData();
             MLR m = new MLR();
             m.ImportData(dp.Alldata);
-            m.Nepochs = 500;
-            m.Split = 0.9;
-            m.LearningRate = 0.1;
-            m.BatchSize = 10;
+            m.Nepochs = 50;
+            m.Split = 0.7;
+            m.LearningRate = 0.01;
+            m.BatchSize = 1;
             m.SplitData();
             m.Train();
             m.Test();

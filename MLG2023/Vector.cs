@@ -88,6 +88,7 @@ namespace MLG2023
             for (i = 0; i < this.Size; i++)
                 this[i] = 0;
         }
+
         public override string ToString()
         {
             int i;
@@ -100,5 +101,38 @@ namespace MLG2023
             tmp += ")";
             return tmp;
         }
+
+        //public List<double> ToList()
+        //{
+        //    List<double> listRepresentation = new List<double>();
+
+        //    for (int i = 0; i < this.Size; i++)
+        //    {
+        //        listRepresentation.Add(this[i]);
+        //    }
+
+        //    return listRepresentation;
+        //}
+
+        //public double Max()
+        //{
+        //    if (this.Size == 0)
+        //    {
+        //        throw new InvalidOperationException("Vector has no elements.");
+        //    }
+
+        //    double maxVal = this[0]; // Assume the first element is the maximum initially
+
+        //    for (int i = 1; i < this.Size; i++)
+        //    {
+        //        if (this[i] > maxVal)
+        //        {
+        //            maxVal = this[i];
+        //        }
+        //    }
+
+        //    return maxVal;
+        //}
+
     }
 }

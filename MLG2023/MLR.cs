@@ -173,6 +173,7 @@ namespace MLG2023
                     if(count % BatchSize == 0)
                     {
                         UpdateWeightsAndBiases();
+                        ResetAdjustments(yhat, r);
                     }
                     else
                     {
@@ -183,25 +184,39 @@ namespace MLG2023
             //ComputeAverageAdjustmentsAtEnd();
         }
 
-        public Vector Test()
+        public void Test()
         {
-            Vector yhat;
+            List<Vector> yhatValues = new List<Vector>();
+            Vector yhat = new Vector(noutputs);
+            int yHatMaxIndex,yMaxIndex;
             foreach (var r in testdata)
             {
-                yhat= ProcessRow(r);
+                yhat = ProcessRow(r);
+                yhatValues.Add(yhat);
             }
 
-            return yhat;
+            for(int i=0 ; i<yhatValues.Count ; i++)
+            {
+                //yHatMaxIndex = yhatValues[i].ToList().IndexOf(yhatValues[i].Max());
+                //yMaxIndex = testdata[i].Vout.ToList().IndexOf(yhatValues[i].Max());
+                Console.WriteLine("yhat = {0} \t y = {1}", yhatValues[i], testdata[i].Vout);
+            }
+
+        }
+
+        public void ResetAdjustments(Vector yhat, MLRRow row)
+        {
+            //set all adjustments to 0
+            foreach (var v in weights_adj)
+                v.Zero();
+            for (int i = 0; i < biases_adj.Count; i++)
+                biases_adj[i] = 0;
         }
         public void ComputeAdjusments(Vector yhat, MLRRow r)
         {
             int i = 0;
             int count = 0;
-            //set all adjustments to 0
-            foreach(var v in weights_adj)
-                v.Zero();
-            for (i = 0; i < biases_adj.Count; i++)
-                biases_adj[i] = 0;
+
             //calc adjustments
             //each v is of length ninputs
             //count is the class
@@ -235,9 +250,9 @@ namespace MLG2023
             {
                 for (int j = 0; j < weights_adj[i].Size; j++)
                 {
-                    weights_adj[i][j] += weights_adj[i][j] / weights_adj[i].Size;
+                    weights_adj[i][j] += weights_adj[i][j] / BatchSize;
                 }
-                biases_adj[i] += biases_adj[i] / biases_adj.Count;
+                biases_adj[i] += biases_adj[i] / BatchSize;
             }
         }
 
@@ -253,6 +268,8 @@ namespace MLG2023
                 biases_adj[i] /= nepochs * BatchSize;
             }
         }
+
+
 
         public void SplitData()
         {
